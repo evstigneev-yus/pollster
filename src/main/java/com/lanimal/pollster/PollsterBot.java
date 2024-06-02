@@ -42,5 +42,6 @@ public class PollsterBot extends TelegramLongPollingBot {
     public void onRegister() {
         super.onRegister();
         //start scheduler(read all schedules form db for next day and )
+        //consider quartz https://mvnrepository.com/artifact/org.quartz-scheduler/quartz
     }
 }
