@@ -24,3 +24,6 @@ hs_err_pid*
 replay_pid*
 /.idea/
 /config/docker/images/mysql/db/
+/src/main/generated/
+/.gradle/
+/out/
