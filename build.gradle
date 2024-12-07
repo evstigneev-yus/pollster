@@ -21,14 +21,10 @@ repositories {
 
 def daggerVersion = "2.53"
 def jUnitVersion = "5.11.3"
-def jacksonVersion = "2.18.2"
 def mockitoVersion = "5.14.2"
 
 dependencies {
     implementation "org.telegram:telegrambots:6.9.7.1"
-
-    implementation "com.fasterxml.jackson.core:jackson-databind:" + jacksonVersion
-
     implementation "com.google.dagger:dagger:" + daggerVersion
     annotationProcessor("com.google.dagger:dagger-compiler:" + daggerVersion)
 

@@ -13,6 +13,7 @@ public class PollsterBot extends TelegramLongPollingBot {
     @Inject
     public PollsterBot(Configuration configuration) {
         super(configuration.getBotToken());
+        System.out.println("Bot Successfully Started.");
     }
 
     @Override
