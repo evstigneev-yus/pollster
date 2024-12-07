@@ -27,3 +27,6 @@ replay_pid*
 /src/main/generated/
 /.gradle/
 /out/
+/.env
+/src/main/resources/.env
+/build/

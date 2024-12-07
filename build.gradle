@@ -1,98 +1,44 @@
-import java.sql.DriverManager
-import java.sql.SQLException
-
-buildscript {
-    dependencies {
-        classpath 'com.mysql:mysql-connector-j:8.0.33'
+plugins {
+    id "java"
+    id "idea"
+    id("io.freefair.lombok") version "8.11"
+}
+group "com.lanimal"
+version "1.0-SNAPSHOT"
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+idea {
+    module {
+        downloadJavadoc = false
+        downloadSources = false
     }
 }
-
-plugins {
-    id 'java'
-    id 'org.liquibase.gradle' version '2.2.0'
-}
-
-group 'com.lanimal'
-version '1.0-SNAPSHOT'
-
 repositories {
     mavenCentral()
 }
 
-def lq_dbname = hasProperty('dbname') ? dbname : "pollster"
-def lq_dbuser = hasProperty('dbuser') ? dbuser : "pollster"
-def lq_dbpass = hasProperty('dbpassword') ? dbpassword : "pollster123"
-def lq_mysqlHost = hasProperty('dbhost') ? dbhost : "localhost"
-def lq_mysqlPort = hasProperty('dbport') ? dbport : "3306"
-def lq_ssl_mode = hasProperty('ssl_mode') ? ssl_mode : "REQUIRED"
-def lq_wait_db_connection = hasProperty('wait_db_connection') ? wait_db_connection : false
-def lq_db_url = "jdbc:mysql://${lq_mysqlHost}:${lq_mysqlPort}/${lq_dbname}?sslMode=${lq_ssl_mode}"
-
+def daggerVersion = "2.53"
+def jUnitVersion = "5.11.3"
+def jacksonVersion = "2.18.2"
+def mockitoVersion = "5.14.2"
 
 dependencies {
-    annotationProcessor 'org.projectlombok:lombok:1.18.32'
-    compileOnly 'org.projectlombok:lombok:1.18.32'
-    implementation 'com.mysql:mysql-connector-j:8.2.0'
-    implementation 'org.telegram:telegrambots:6.9.7.1'
-    implementation 'org.hibernate:hibernate-core:6.5.2.Final'
+    implementation "org.telegram:telegrambots:6.9.7.1"
 
-    liquibaseRuntime 'com.mysql:mysql-connector-j:8.2.0'
-    liquibaseRuntime 'info.picocli:picocli:4.7.1'
-    liquibaseRuntime 'org.liquibase:liquibase-core:4.20.0'
-    liquibaseRuntime 'org.liquibase:liquibase-groovy-dsl:3.0.3'
-    liquibaseRuntime 'javax.xml.bind:jaxb-api:2.3.1'
+    implementation "com.fasterxml.jackson.core:jackson-databind:" + jacksonVersion
 
-    implementation 'com.google.dagger:dagger:2.51.1'
-    annotationProcessor("com.google.dagger:dagger-compiler:2.51.1")
+    implementation "com.google.dagger:dagger:" + daggerVersion
+    annotationProcessor("com.google.dagger:dagger-compiler:" + daggerVersion)
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
-    testImplementation 'org.hamcrest:hamcrest:2.2'
-    testImplementation 'org.mockito.mockito-core:5.12.0'
-    testImplementation 'org.mockito:mockito-junit-jupiter:5.12.0'
-}
-
-liquibase {
-    activities {
-        main {
-            changeLogFile 'src/main/resources/db/changelog/master.xml'
-            searchPath "${project.rootDir}"
-            url "${lq_db_url}"
-            username "${lq_dbuser}"
-            password "${lq_dbpass}"
-        }
-    }
-    runList = 'main'
+    testImplementation "org.junit.jupiter:junit-jupiter-api:" + jUnitVersion
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:" + jUnitVersion
+    testImplementation "org.hamcrest:hamcrest:3.0"
+    testImplementation "org.mockito:mockito-junit-jupiter:" + mockitoVersion
+    testImplementation "org.mockito:mockito-core:" + mockitoVersion
 }
 
 test {
     useJUnitPlatform()
-}
-
-if (lq_wait_db_connection) {
-    waitDbConnection(lq_db_url, lq_dbuser, lq_dbpass)
-}
-
-@SuppressWarnings('GroovyAccessibility')
-private void waitDbConnection(String db_url, String user, String password) {
-    def mysql = buildscript.configurations.classpath.find { it.toString().contains("mysql-connector-j") }
-    URLClassLoader loader = GroovyObject.class.classLoader
-    loader.addURL(file(mysql).toURI().toURL())
-    System.out.print("Trying connect to mysql")
-    def connected = false
-    def tries = 0
-    while (!connected) {
-        try {
-            DriverManager.getConnection(db_url, user, password);
-            connected = true
-        } catch (SQLException e) {
-            if (tries > 120) {
-                throw e
-            }
-            System.out.print(".")
-            Thread.sleep(1000L)
-            tries++
-        }
-    }
-    System.out.println("")
 }

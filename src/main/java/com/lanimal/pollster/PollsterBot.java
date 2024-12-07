@@ -11,21 +11,14 @@ import java.util.List;
 public class PollsterBot extends TelegramLongPollingBot {
 
     @Inject
-    public PollsterBot() {
-        super("TOKEN");
+    public PollsterBot(Configuration configuration) {
+        super(configuration.getBotToken());
     }
 
     @Override
     public void onUpdateReceived(Update update) {
-        // here will be processing of stop conditions for polls
-
-        //here will be commands processing like:
-        // create scheduled poll
-        // delete scheduled poll
-        // list scheduled polls
-        // list answers
-        // edit poll
-        // edit schedule
+        String text = update.getMessage().getText();
+        System.out.println(text);
     }
 
     @Override
@@ -41,7 +34,5 @@ public class PollsterBot extends TelegramLongPollingBot {
     @Override
     public void onRegister() {
         super.onRegister();
-        //start scheduler(read all schedules form db for next day and )
-        //consider quartz https://mvnrepository.com/artifact/org.quartz-scheduler/quartz
     }
 }

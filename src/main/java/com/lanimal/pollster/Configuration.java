@@ -2,28 +2,27 @@ package com.lanimal.pollster;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Properties;
 
 @Singleton
 public class Configuration {
 
+    Properties properties = new Properties();
+
     @Inject
     public Configuration() {
-    }
-
-    public String getPollsterDbUrl() {
-//        jdbc:mysql://123456789:3306;database=pollster"
-        throw new UnsupportedOperationException();
-    }
-
-    public String getDbUserName() {
-        throw new UnsupportedOperationException();
-    }
-
-    public String getDbPassword() {
-        throw new UnsupportedOperationException();
+        try (InputStream inputStream = Files.newInputStream(Paths.get(".env"))) {
+            properties.load(inputStream);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public String getBotToken() {
-        throw new UnsupportedOperationException();
+        return properties.getProperty("TOKEN", null);
     }
 }

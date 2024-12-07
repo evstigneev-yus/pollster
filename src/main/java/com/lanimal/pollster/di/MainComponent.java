@@ -7,7 +7,7 @@ import org.telegram.telegrambots.meta.TelegramBotsApi;
 import javax.inject.Singleton;
 
 @Singleton
-@Component(modules = {MainModule.class, TelegramBotApiModule.class})
+@Component(modules = {MainModule.class, TelegramBotApiModule.class, ObjectMapperModule.class})
 public interface MainComponent {
 
     PollsterBot pollsterBot();
