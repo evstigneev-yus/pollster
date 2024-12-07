@@ -25,4 +25,8 @@ public class Configuration {
     public String getBotToken() {
         return properties.getProperty("TOKEN", null);
     }
+
+    public String getBotName() {
+        return properties.getProperty("NAME", null);
+    }
 }

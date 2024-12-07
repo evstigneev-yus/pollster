@@ -9,6 +9,8 @@ import java.util.List;
 
 @Singleton
 public class PollsterBot extends TelegramLongPollingBot {
+    @Inject
+    Configuration configuration;
 
     @Inject
     public PollsterBot(Configuration configuration) {
@@ -29,7 +31,7 @@ public class PollsterBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return "true_pollster_bot";
+        return configuration.getBotName();
     }
 
     @Override
