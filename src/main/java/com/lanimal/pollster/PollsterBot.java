@@ -1,5 +1,7 @@
 package com.lanimal.pollster;
 
+import lombok.AccessLevel;
+import lombok.Setter;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
@@ -9,8 +11,13 @@ import java.util.List;
 
 @Singleton
 public class PollsterBot extends TelegramLongPollingBot {
+
     @Inject
     Configuration configuration;
+
+    @Inject
+    @Setter(AccessLevel.PACKAGE)
+    CommandHandler commandHandler;
 
     @Inject
     public PollsterBot(Configuration configuration) {
@@ -20,8 +27,12 @@ public class PollsterBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        String text = update.getMessage().getText();
-        System.out.println(text);
+        if (update.getMessage() == null) {
+            return;
+        }
+        if (update.getMessage().isCommand()) {
+            commandHandler.handleCommands(update.getMessage().getText());
+        }
     }
 
     @Override
