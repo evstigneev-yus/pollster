@@ -31,7 +31,7 @@ public class PollsterBot extends TelegramLongPollingBot {
             return;
         }
         if (update.getMessage().isCommand()) {
-            commandHandler.handleCommands(update.getMessage().getText());
+            commandHandler.handleCommands(update);
         }
     }
 

@@ -1,5 +1,7 @@
 package com.lanimal.pollster;
 
+import org.telegram.telegrambots.meta.api.objects.Update;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -9,7 +11,8 @@ public class CommandHandler {
     public CommandHandler() {
     }
 
-    public void handleCommands(String commandText) {
+    public void handleCommands(Update update) {
+        //todo: on "/start" command call pollService.startPoll
         throw new UnsupportedOperationException();
     }
 }

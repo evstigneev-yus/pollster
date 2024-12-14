@@ -15,7 +15,6 @@ class PollsterBotTest {
 
     PollsterBot pollsterBot;
 
-
     @BeforeEach
     public void before() {
         mockCommandHandler = mock(CommandHandler.class);
@@ -23,7 +22,6 @@ class PollsterBotTest {
         pollsterBot = spy(new PollsterBot(mockConfiguration));
         pollsterBot.setCommandHandler(mockCommandHandler);
     }
-
 
     @Test
     public void onUpdateReceived_callCommandHandlerHandleCommands() {
@@ -38,7 +36,7 @@ class PollsterBotTest {
         pollsterBot.onUpdateReceived(mockUpdate);
 
         // verify
-        verify(mockCommandHandler).handleCommands("/test_command_1");
+        verify(mockCommandHandler).handleCommands(mockUpdate);
     }
 
     @Test
@@ -68,5 +66,4 @@ class PollsterBotTest {
         // verify
         verify(mockCommandHandler, never()).handleCommands(any());
     }
-
 }
